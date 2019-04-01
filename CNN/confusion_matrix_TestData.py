@@ -22,7 +22,7 @@ print len(x), len(y)
 from keras.models import load_model
 from sklearn.metrics import confusion_matrix
 
-model = load_model('big.data.89.2.acc.mod')
+model = load_model('Trained_Model.acc.mod')
 pred = model.predict(x)
 pred_cat = [i.argmax() for i in pred]
 print confusion_matrix(y, pred_cat)
@@ -31,7 +31,6 @@ print confusion_matrix(y, pred_cat) / float(len(y))
 
 k = []
 for idx,i in enumerate(pred):
-    #k.append(np.exp(i)/sum(np.exp(i)))
     k.append(i/sum(i))
 
 n = []
