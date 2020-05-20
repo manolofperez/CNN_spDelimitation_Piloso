@@ -1,7 +1,4 @@
 #!/usr/bin/python
-#note, columns in "output.txt" as follows: pi	ss	D	thetaH	H
-
-## Code that simulate data for the evolution2015 ABC course
 
 ## in order to use this code you have to have ms installed on your computer
 ## ms can be freely downloaded from:
