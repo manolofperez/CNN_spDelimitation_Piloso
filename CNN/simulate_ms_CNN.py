@@ -168,7 +168,7 @@ for i in range(Priorsize):
 
 	## save parameter values and models
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Ne, RootDivTime, T1, T2, T3, T4, T5, T6))
-	models.write("mod2\n")
+	models.write("2\n")
 
 simModel2=np.array(simModel2)
 np.savez_compressed('simModel2.npz', simModel2=simModel2)
@@ -212,7 +212,7 @@ for i in range(Priorsize):
 	simModel3.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(nDNANsam,-1).T)
 	## save parameter values
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Ne, RootDivTime, T1, T2, T3, T4, T5, T6))
-	models.write("mod3\n")
+	models.write("3\n")
 
 simModel3=np.array(simModel3)
 np.savez_compressed('simModel3.npz', simModel3=simModel3)
