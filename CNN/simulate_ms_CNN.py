@@ -1,7 +1,4 @@
 #!/usr/bin/python
-#note, columns in "output.txt" as follows: pi	ss	D	thetaH	H
-
-## Code that simulate data for the evolution2015 ABC course
 
 ## in order to use this code you have to have ms installed on your computer
 ## ms can be freely downloaded from:
@@ -28,7 +25,7 @@ def ms2nparray(xfile):
 	k = [idx for idx,i in enumerate(g) if len(i) > 0 and i.startswith('//')]
 	f = []
 	for i in k:
-	    L = g[i+4:i+220]
+	    L = g[i+4:i+nDNANsam+4]
 	    q = []
 	    for i in L:
 	    	i = [int(j) for j in list(i)]
@@ -128,7 +125,7 @@ for i in range(Priorsize):
 	## nDNA ms's command
 	com=subprocess.Popen("./ms %d 26 -s 5 -t %f -I 20 %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d -ej 0 19 5 -ej 0 13 5 -ej 0 9 5 -ej 0 15 4 -ej 0 14 4 -ej 0 20 7 -ej 0 16 7 -ej 0 8 7 -ej 0 10 6 -ej 0 12 2 -ej 0 11 2 -ej %f 5 4 -ej %f 18 1 -ej %f 3 2 -ej %f 17 1 -ej %f 6 2 -ej %f 2 1 -ej %f 4 1 -ej %f 7 1" % (nDNANsam, Theta,  nDNAGIL, nDNAART1, nDNAART2, nDNAMAG_TEG, nDNAAPAs, nDNADBO, nDNAPET_ALC, nDNAMIN, nDNAFOR_DEL, nDNABUR, nDNAUNA, nDNAFMS, nDNAURU, nDNAGOV, nDNAPIR, nDNAAQU_RVE, nDNAMOC, nDNAPOS2, nDNACRI, nDNAPGO, coalT1, coalT1, coalT1, coalT2, coalT2, coalT3, coalT4, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
 	output = com.read().splitlines()
-	simModel1.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(216,-1).T)
+	simModel1.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(nDNANsam,-1).T)
 	## save parameter values and models
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Ne, RootDivTime, T1, T2, T3, T4, T5, T6))
 	models.write("1\n")
@@ -167,11 +164,11 @@ for i in range(Priorsize):
 	## nDNA ms's command
 	com=subprocess.Popen("./ms %d 26 -s 5 -t %f -I 20 %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d -ej 0 15 14 -ej 0 13 9 -ej 0 20 8 -ej 0 10 6 -ej 0 12 2 -ej %f 5 4 -ej %f 8 7 -ej %f 18 1 -ej %f 3 2 -ej %f 14 7 -ej %f 9 4 -ej %f 17 1 -ej %f 16 7 -ej %f 6 2 -ej %f 11 1 -ej %f 19 2 -ej %f 7 4 -ej %f 4 2 -ej %f 2 1" % (nDNANsam, Theta,  nDNAGIL, nDNAART1, nDNAART2, nDNAMAG_TEG, nDNAAPAs, nDNADBO, nDNAPET_ALC, nDNAMIN, nDNAFOR_DEL, nDNABUR, nDNAUNA, nDNAFMS, nDNAURU, nDNAGOV, nDNAPIR, nDNAAQU_RVE, nDNAMOC, nDNAPOS2, nDNACRI, nDNAPGO, coalT1, coalT1, coalT1, coalT1, coalT1, coalT2, coalT2, coalT2, coalT2, coalT3, coalT3, coalT4, coalT5, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
 	output = com.read().splitlines()
-	simModel2.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(216,-1).T)
+	simModel2.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(nDNANsam,-1).T)
 
 	## save parameter values and models
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Ne, RootDivTime, T1, T2, T3, T4, T5, T6))
-	models.write("mod2\n")
+	models.write("2\n")
 
 simModel2=np.array(simModel2)
 np.savez_compressed('simModel2.npz', simModel2=simModel2)
@@ -212,10 +209,10 @@ for i in range(Priorsize):
 	## nDNA ms's command
 	com=subprocess.Popen("./ms %d 26 -s 5 -t %f -I 20 %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d -ej 0 3 2 -ej 0 12 6 -ej %f 19 1 -ej %f 18 1 -ej %f 10 6 -ej %f 5 4 -ej %f 15 13 -ej %f 20 8 -ej %f 17 11 -ej %f 13 4 -ej %f 16 8 -ej %f 11 1 -ej %f 14 4 -ej %f 8 7 -ej %f 6 1 -ej %f 9 7 -ej %f 4 1 -ej %f 7 1 -ej %f 2 1" % (nDNANsam, Theta,  nDNAGIL, nDNAART1, nDNAART2, nDNAMAG_TEG, nDNAAPAs, nDNADBO, nDNAPET_ALC, nDNAMIN, nDNAFOR_DEL, nDNABUR, nDNAUNA, nDNAFMS, nDNAURU, nDNAGOV, nDNAPIR, nDNAAQU_RVE, nDNAMOC, nDNAPOS2, nDNACRI, nDNAPGO, coalT1, coalT1, coalT1, coalT1, coalT1, coalT1, coalT2, coalT2, coalT2, coalT3, coalT3, coalT3, coalT4, coalT4, coalT5, coalT6, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
 	output = com.read().splitlines()
-	simModel3.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(216,-1).T)
+	simModel3.append(np.array(ms2nparray(output)).swapaxes(0,1).reshape(nDNANsam,-1).T)
 	## save parameter values
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Ne, RootDivTime, T1, T2, T3, T4, T5, T6))
-	models.write("mod3\n")
+	models.write("3\n")
 
 simModel3=np.array(simModel3)
 np.savez_compressed('simModel3.npz', simModel3=simModel3)
