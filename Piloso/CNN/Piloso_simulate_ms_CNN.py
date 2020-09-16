@@ -10,7 +10,6 @@ import os
 import math
 import shlex, subprocess
 import numpy as np
-from sklearn.neighbors import NearestNeighbors
 
 ##define a function to read ms' simulations and transform then into a NumPy array.    
 def ms2nparray(xfile):
@@ -66,7 +65,7 @@ nDNANsam = nDNAITA + nDNAPMN + nDNAEDB + nDNABOV + nDNAJFE + nDNACOC + nDNAINA +
 ## number of years per generation
 genlen = 15
 
-#number of segregating sites for each marker
+#number of segregating sites for each nuclear marker
 segsites = [26,3,12,9,21,8,13,22,18,7,7,24,14,11]
 
 #initialize a list that will contain the simulations for each model.
@@ -300,9 +299,8 @@ for i in range(Priorsize):
 	#concatenate segregating sites from all markers
 	simModel5.append(np.concatenate((nc_output, cp_output, mt_output),axis=2).swapaxes(0,1).reshape(nDNANsam,-1).T)
 
-	## save parameter values and models
+	## save parameter values
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
-	models.write("5\n")
 
 #save NumPy arrays
 simModel5=np.array(simModel5)
