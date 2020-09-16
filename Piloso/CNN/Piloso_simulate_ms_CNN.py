@@ -2,8 +2,9 @@
 
 ## in order to use this code you have to have ms installed on your computer
 ## ms can be freely downloaded from:
-## http://home.uchicago.edu/rhudson1/source/mksamples.html
+## http://home.uchicago.edu/rhudson1/source/mksamples.html.
 
+##import all required modules.
 import random
 import os
 import math
@@ -11,15 +12,7 @@ import shlex, subprocess
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
-def sort_min_diff(amat):
-    '''this function takes in a SNP matrix with indv on rows and returns the same matrix with indvs sorted by genetic similarity.
-    this problem is NP-hard, so here we use a nearest neighbors approx.  it's not perfect, but it's fast and generally performs ok.
-    assumes your input matrix is a numpy array'''
-    mb = NearestNeighbors(len(amat), metric='manhattan').fit(amat)
-    v = mb.kneighbors(amat)
-    smallest = np.argmin(v[0].sum(axis=0))
-    return amat[v[1][smallest]]
-    
+##define a function to read ms' simulations and transform then into a NumPy array.    
 def ms2nparray(xfile):
 	g = list(xfile)
 	k = [idx for idx,i in enumerate(g) if len(i) > 0 and i.startswith('//')]
@@ -41,14 +34,15 @@ def ms2nparray(xfile):
 #define the number of simulations
 Priorsize = 10000
 
+###Define sample sizes as number of alleles (2 per specimen).
 ## nDNA sample size of JFE.
 nDNAJFE = 8
 ## nDNA sample size of ITA.
-nDNAITA = 8
+nDNAITA = 6
 ## nDNA sample size of PMN.
-nDNAPMN = 8
+nDNAPMN = 6
 ## nDNA sample size of EDB.
-nDNAEDB = 8
+nDNAEDB = 6
 ## nDNA sample size of BOV.
 nDNABOV = 8
 ## nDNA sample size of COC.
@@ -56,28 +50,34 @@ nDNACOC = 8
 ## nDNA sample size of INA.
 nDNAINA = 8
 ## nDNA sample size of ODA.
-nDNAODA = 8
+nDNAODA = 6
 ## nDNA sample size of MEN.
 nDNAMEN = 8
-
+###Combine sample sizes for populations that are merged in one or more models.
 ## nDNA sample size of ITAPMN.
 nDNAITAPMN = nDNAITA + nDNAPMN
 ## nDNA sample size of BOVEDB.
 nDNABOVEDB = nDNAEDB + nDNABOV
 ## nDNA sample size of Central.
 nDNACentral = nDNACOC + nDNAINA + nDNAODA + nDNAMEN
-
 ## nDNA sample sizes (number of alleles).
 nDNANsam = nDNAITA + nDNAPMN + nDNAEDB + nDNABOV + nDNAJFE + nDNACOC + nDNAINA + nDNAODA + nDNAMEN
+
 ## number of years per generation
 genlen = 15
 
+#number of segregating sites for each marker
+segsites = [26,3,12,9,21,8,13,22,18,7,7,24,14,11]
+
+#initialize a list that will contain the simulations for each model.
 simModel1 = []
 simModel2 = []
 simModel3 = []
-## create a file to store parameters and one to store the models
+simModel4 = []
+simModel5 = []
+
+## create a file to store parameters
 parameters = file("parameters.txt","w")
-models = file("models.txt","w")
 
 ### Clade ES Geneland Model
 for i in range(Priorsize):
