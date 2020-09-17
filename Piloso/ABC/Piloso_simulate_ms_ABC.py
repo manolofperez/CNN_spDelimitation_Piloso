@@ -222,4 +222,4 @@ for i in range(Priorsize):
 	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
 	models.write("5\n")
 	
-com=os.system("cat simModel* > SuSt.txt")
+os.system("cat simModel* > SuSt.txt")

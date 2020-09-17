@@ -2,7 +2,7 @@
 library(abc)
 
 ##change working directory if necessary
-#setwd("/Users/manolo/Documents/Novas_spDelPiloso2020/Drosophila/melano_simulans/ABC")
+#setwd("/Volumes/HD2/manolo/OneDrive/LaGEVol/Artigos_DoutoradoBelManolo/ArtigoDelimitacao/SysBio/Git/Drosophila/ABC")
 
 ##load models for each simulation
 models<-scan("models_melano_simulans.txt")
@@ -201,17 +201,17 @@ summary(pca.cv.modsel10K)
 #Confusion matrix based on 100 samples for each model.
 #
 #$tol0.05
-#   1  2
-#1 63 37
-#2 32 68
+#1  2
+#1 80 20
+#2 23 77
 #
 #
 #Mean model posterior probabilities (neuralnet)
 #
 #$tol0.05
-#       1      2
-#1 0.6286 0.3714
-#2 0.3335 0.6665
+#1      2
+#1 0.7259 0.2741
+#2 0.2946 0.7054
 
 ##run the rejection step of ABC with the empirical data, estimating the running time
 start_time <- Sys.time()
@@ -223,35 +223,35 @@ PCANN.05_time = end_time - start_time
 summary(PCANN.05)
 #Output:
 #Call: 
-#postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.05, 
-#    method = "neuralnet")
+#  postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.05, 
+#         method = "neuralnet")
 #Data:
-# postpr.out$values (1000 posterior samples)
+#  postpr.out$values (1000 posterior samples)
 #Models a priori:
-# 1, 2
+#  1, 2
 #Models a posteriori:
-# 1, 2
+#  1, 2
 #
 #Proportion of accepted simulations (rejection):
-#    1     2 
-#0.372 0.628 
+#  1     2 
+#0.548 0.452 
 #
 #Bayes factors:
-#       1      2
-#1 1.0000 0.5924
-#2 1.6882 1.0000
+#  1      2
+#1 1.0000 1.2124
+#2 0.8248 1.0000
 #
 #
 #Posterior model probabilities (neuralnet):
-#     1      2 
-#0.0748 0.9252 
+#  1      2 
+#0.9126 0.0874 
 #
 #Bayes factors:
-#        1       2
-#1  1.0000  0.0809
-#2 12.3684  1.0000
+#  1       2
+#1  1.0000 10.4407
+#2  0.0958  1.0000
 
 ##visualize running time
 PCANN.05_time
 #Output:
-#Time difference of 2.025175 secs
+#Time difference of 1.776211 secs

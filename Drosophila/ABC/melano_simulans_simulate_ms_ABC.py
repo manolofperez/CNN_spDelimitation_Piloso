@@ -70,4 +70,4 @@ for i in range(Priorsize):
 	parameters.write("%f\t%f\n" % (Theta, coalRootDivTime))
 	models.write("2\n")
 	
-com=os.system("cat simModel* > SuSt.txt")
+com=os.system("cat simModel* > SuSt_melano_simulans.txt")
