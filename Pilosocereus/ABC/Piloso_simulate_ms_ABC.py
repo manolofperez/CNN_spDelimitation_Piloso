@@ -36,10 +36,10 @@ nDNAMEN = 8
 ###Combine sample sizes for populations that are merged in one or more models.
 ## nDNA sample size of ITAPMN.
 nDNAITAPMN = nDNAITA + nDNAPMN
-## nDNA sample size of BOVEDB.
-nDNABOVEDB = nDNAEDB + nDNABOV
-## nDNA sample size of Central.
-nDNACentral = nDNACOC + nDNAINA + nDNAODA + nDNAMEN
+## nDNA sample size of BOVEDBODA.
+nDNABOVEDBODA = nDNAEDB + nDNABOV + nDNAODA
+## nDNA sample size of INAMEN.
+nDNAINAMEN = nDNAINA + nDNAMEN
 ## nDNA sample sizes (number of alleles).
 nDNANsam = nDNAITA + nDNAPMN + nDNAEDB + nDNABOV + nDNAJFE + nDNACOC + nDNAINA + nDNAODA + nDNAMEN
 
@@ -62,31 +62,32 @@ for i in range(Priorsize):
 
 	## divergence time prior following an uniform distribution from 0.5 to 5.
 	coalRootDivTime = random.uniform(0.5,5)
-	#subsequent divergence times, from until the previous divergence times, making sure they are younger than the root.
+	#subsequent divergence times, from 0 until the previous divergence times, making sure they are younger than the root.
 	coalT1=random.uniform(0,coalRootDivTime)
 	coalT2=random.uniform(0,coalT1)
+	coalT3=random.uniform(0,coalT2)
+
 
 	## migration prior set to 0 in this model.
 	mJFE_ITAPMN=0
-	mJFE_BOVEDB=0
-	mJFE_Central=0
-	mITAPMN_BOVEDB=0
-	mITAPMN_Central=0
-	mBOVEDB_Central=0
+	mJFE_BOVEDBODA=0
+	mJFE_INAMEN=0
+	mJFE_COC=0
+	mITAPMN_BOVEDBODA=0
+	mITAPMN_INAMEN=0
+	mITAPMN_COC=0
+	mBOVEDBODA_INAMEN=0
+	mBOVEDBODA_COC=0
+	mINAMEN_COC=0
 	
 	### ms commands
 	##nuclear markers, using the number of segregating sites for each loci
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=os.system("./ms %d 1 -s %d -t %f -I 4 %d %d %d %d -ej %f 2 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, coalT2, coalT1, coalRootDivTime))
-
-	## cpDNA markers
-	com=os.system("./ms %d 1 -s 15 -t %f -I 4 %d %d %d %d -ej %f 2 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, coalT2/2, coalT1/2, coalRootDivTime/2))
-	## mtDNA markers
-	com=os.system("./ms %d 1 -s 4 -t %f -I 4 %d %d %d %d -ej %f 2 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, coalT2/2, coalT1/2, coalRootDivTime/2))
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej %f 2 4 -ej %f 5 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, coalT3, coalT2, coalT1, coalRootDivTime))
 
 	## save parameter values and models
-	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
 	models.write("1\n")
 
 ### Splitter Model + Migration
@@ -95,33 +96,34 @@ for i in range(Priorsize):
 	### Define parameters
 	## Theta values from 1 to 15
 	Theta = random.uniform(1,15)
+
 	## divergence time prior following an uniform distribution from 0.5 to 5.
 	coalRootDivTime = random.uniform(0.5,5)
-	#subsequent divergence times, from until the previous divergence times, making sure they are younger than the root.
+	#subsequent divergence times, from 0 until the previous divergence times, making sure they are younger than the root.
 	coalT1=random.uniform(0,coalRootDivTime)
 	coalT2=random.uniform(0,coalT1)
+	coalT3=random.uniform(0,coalT2)
 
 	## divergence time prior following an uniform distribution from 0 to 5.
 	mJFE_ITAPMN=random.uniform(0,5)
-	mJFE_BOVEDB=random.uniform(0,5)
-	mJFE_Central=random.uniform(0,5)
-	mITAPMN_BOVEDB=random.uniform(0,5)
-	mITAPMN_Central=random.uniform(0,5)
-	mBOVEDB_Central=random.uniform(0,5)
+	mJFE_BOVEDBODA=random.uniform(0,5)
+	mJFE_INAMEN=random.uniform(0,5)
+	mJFE_COC=random.uniform(0,5)
+	mITAPMN_BOVEDBODA=random.uniform(0,5)
+	mITAPMN_INAMEN=random.uniform(0,5)
+	mITAPMN_COC=random.uniform(0,5)
+	mBOVEDBODA_INAMEN=random.uniform(0,5)
+	mBOVEDBODA_COC=random.uniform(0,5)
+	mINAMEN_COC=random.uniform(0,5)
 
 	### ms commands
 	##nuclear markers, using the number of segregating sites for each loci
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=os.system("./ms %d 1 -s %d -t %f -I 4 %d %d %d %d -m 1 2 %f -m 2 1 %f -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 2 3 %f -m 3 2 %f -m 2 4 %f -m 4 2 %f -m 3 4 %f -m 4 3 %f -ej %f 2 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB, nDNACentral, mJFE_ITAPMN, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_BOVEDB,  mJFE_Central, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_BOVEDB, mITAPMN_Central, mITAPMN_Central, mBOVEDB_Central, mBOVEDB_Central, coalT2, coalT1, coalRootDivTime))
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -m 1 2 %f -m 2 1 %f -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 1 5 %f -m 5 1 %f -m 2 3 %f -m 3 2 %f -m 2 4 %f -m 4 2 %f -m 2 5 %f -m 5 2 %f -m 3 4 %f -m 4 3 %f -m 3 5 %f -m 5 3 %f -m 4 5 %f -m 5 4 %f -ej %f 2 4 -ej %f 5 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, mJFE_ITAPMN, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_BOVEDBODA,  mJFE_INAMEN, mJFE_INAMEN, mJFE_COC, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_INAMEN, mITAPMN_COC, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mBOVEDBODA_COC, mINAMEN_COC, mINAMEN_COC, coalT3, coalT2, coalT1, coalRootDivTime))
 	
-	## cpDNA markers
-	com=os.system("./ms %d 1 -s 15 -t %f -I 4 %d %d %d %d -m 1 2 %f -m 2 1 %f -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 2 3 %f -m 3 2 %f -m 2 4 %f -m 4 2 %f -m 3 4 %f -m 4 3 %f -ej %f 2 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB, nDNACentral, mJFE_ITAPMN, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_BOVEDB,  mJFE_Central, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_BOVEDB, mITAPMN_Central, mITAPMN_Central, mBOVEDB_Central, mBOVEDB_Central, coalT2/2, coalT1/2, coalRootDivTime/2))
-	## mtDNA markers
-	com=os.system("./ms %d 1 -s 4 -t %f -I 4 %d %d %d %d -m 1 2 %f -m 2 1 %f -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 2 3 %f -m 3 2 %f -m 2 4 %f -m 4 2 %f -m 3 4 %f -m 4 3 %f -ej %f 2 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB, nDNACentral, mJFE_ITAPMN, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_BOVEDB,  mJFE_Central, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_BOVEDB, mITAPMN_Central, mITAPMN_Central, mBOVEDB_Central, mBOVEDB_Central, coalT2/2, coalT1/2, coalRootDivTime/2))
-
 	## save parameter values and models
-	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
 	models.write("2\n")
 
 ### Lumper Model
@@ -133,28 +135,31 @@ for i in range(Priorsize):
 
 	## divergence time prior following an uniform distribution from 0.5 to 5.
 	coalRootDivTime = random.uniform(0.5,5)
+	#subsequent divergence times, set to 0 in this model.
+	coalT1=0
+	coalT2=0
+	coalT3=0
 
 	## migration prior set to 0 in this model.
 	mJFE_ITAPMN=0
-	mJFE_BOVEDB=0
-	mJFE_Central=0
-	mITAPMN_BOVEDB=0
-	mITAPMN_Central=0
-	mBOVEDB_Central=0
+	mJFE_BOVEDBODA=0
+	mJFE_INAMEN=0
+	mJFE_COC=0
+	mITAPMN_BOVEDBODA=0
+	mITAPMN_INAMEN=0
+	mITAPMN_COC=0
+	mBOVEDBODA_INAMEN=0
+	mBOVEDBODA_COC=0
+	mINAMEN_COC=0
 
 	### ms commands
 	##nuclear markers, using the number of segregating sites for each loci
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=os.system("./ms %d 1 -s %d -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel3.txt" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, coalRootDivTime))
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -ej 0 5 4 -ej 0 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel3.txt" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, coalRootDivTime))
 	
-	## cpDNA markers
-	com=os.system("./ms %d 1 -s 15 -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel3.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, coalRootDivTime/2))
-	## mtDNA markers
-	com=os.system("./ms %d 1 -s 4 -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel3.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, coalRootDivTime/2))
-
 	## save parameter values and models
-	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
 	models.write("3\n")
 	
 ### Lumper Model + Migration
@@ -166,31 +171,34 @@ for i in range(Priorsize):
 
 	## divergence time prior following an uniform distribution from 0.5 to 5.
 	coalRootDivTime = random.uniform(0.5,5)
+	#subsequent divergence times, set to 0 in this model.
+	coalT1=0
+	coalT2=0
+	coalT3=0
 
-	## migration prior set to 0 in this model.
+	## migration prior, set to 0 in this model, except for the migration between JFE and the remaining populations.
 	mJFE_ITAPMN=0
-	mJFE_BOVEDB=0
-	mJFE_Central=0
-	mITAPMN_BOVEDB=0
-	mITAPMN_Central=0
-	mBOVEDB_Central=0
+	mJFE_BOVEDBODA=random.uniform(0,5)
+	mJFE_INAMEN=0
+	mJFE_COC=0
+	mITAPMN_BOVEDBODA=0
+	mITAPMN_INAMEN=0
+	mITAPMN_COC=0
+	mBOVEDBODA_INAMEN=0
+	mBOVEDBODA_COC=0
+	mINAMEN_COC=0
 
 	### ms commands
 	##nuclear markers, using the number of segregating sites for each loci
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=os.system("./ms %d 1 -s %d -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -m 1 4 %f -m 4 1 %f -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel4.txt" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, mJFE_Central, mJFE_Central, coalRootDivTime))
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -ej 0 5 4 -ej 0 3 4 -m 1 4 %f -m 4 1 %f -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel4.txt" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, mJFE_BOVEDBODA, mJFE_BOVEDBODA, coalRootDivTime))
 	
-	## cpDNA markers
-	com=os.system("./ms %d 1 -s 15 -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -m 1 4 %f -m 4 1 %f -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel4.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, mJFE_Central, mJFE_Central, coalRootDivTime/2))
-	## mtDNA markers
-	com=os.system("./ms %d 1 -s 4 -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -m 1 4 %f -m 4 1 %f -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel4.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral, mJFE_Central, mJFE_Central, coalRootDivTime/2))
-
 	## save parameter values and models
-	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
 	models.write("4\n")
 	
-### Geneland Model
+### BPP+GDI Model
 for i in range(Priorsize):
 
 	### Define parameters
@@ -199,27 +207,104 @@ for i in range(Priorsize):
 
 	## divergence time prior set to 0 in this model.
 	coalRootDivTime = 0
+	#subsequent divergence times, set to 0 in this model.
+	coalT1=0
+	coalT2=0
+	coalT3=0
 
 	## migration prior set to 0 in this model.
 	mJFE_ITAPMN=0
-	mJFE_BOVEDB=0
-	mJFE_Central=0
-	mITAPMN_BOVEDB=0
-	mITAPMN_Central=0
-	mBOVEDB_Central=0
+	mJFE_BOVEDBODA=0
+	mJFE_INAMEN=0
+	mJFE_COC=0
+	mITAPMN_BOVEDBODA=0
+	mITAPMN_INAMEN=0
+	mITAPMN_COC=0
+	mBOVEDBODA_INAMEN=0
+	mBOVEDBODA_COC=0
+	mINAMEN_COC=0
 
 	## ms commands
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=os.system("./ms %d 1 -s %d -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -ej 0 1 4 | sed '/prob/d' | perl msSS.pl >> simModel5.txt" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral))
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -ej 0 5 4 -ej 0 3 4 -ej 0 1 4 | sed '/prob/d' | perl msSS.pl >> simModel5.txt" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC))
 	
-	## cpDNA markers
-	com=os.system("./ms %d 1 -s 15 -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -ej 0 1 4 | sed '/prob/d' | perl msSS.pl >> simModel5.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral))
-	## mtDNA markers
-	com=os.system("./ms %d 1 -s 4 -t %f -I 4 %d %d %d %d -ej 0 2 4 -ej 0 3 4 -ej 0 1 4 | sed '/prob/d' | perl msSS.pl >> simModel5.txt" % (nDNANsam, Theta/4, nDNAJFE, nDNAITAPMN ,nDNABOVEDB , nDNACentral))
+	## save parameter values and models
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
+	models.write("5\n")
+
+### BPP_noGDI
+for i in range(Priorsize):
+
+	### Define parameters
+	## Theta values from 1 to 15
+	Theta = random.uniform(1,15)
+
+	## divergence time prior following an uniform distribution from 0.5 to 5.
+	coalRootDivTime = random.uniform(0.5,5)
+	#subsequent divergence times, from 0 until the previous divergence times, making sure they are younger than the root.
+	coalT1=random.uniform(0,coalRootDivTime)
+	coalT2=random.uniform(0,coalT1)
+	coalT3=0
+
+
+	## migration prior set to 0 in this model.
+	mJFE_ITAPMN=0
+	mJFE_BOVEDBODA=0
+	mJFE_INAMEN=0
+	mJFE_COC=0
+	mITAPMN_BOVEDBODA=0
+	mITAPMN_INAMEN=0
+	mITAPMN_COC=0
+	mBOVEDBODA_INAMEN=0
+	mBOVEDBODA_COC=0
+	mINAMEN_COC=0
+	
+	### ms commands
+	##nuclear markers, using the number of segregating sites for each loci
+	for s in range(len(segsites)):
+		## nDNA markers
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -ej %f 5 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel6.txt" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, coalT2, coalT1, coalRootDivTime))
 
 	## save parameter values and models
-	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, mJFE_ITAPMN, mJFE_BOVEDB, mJFE_Central, mITAPMN_BOVEDB, mITAPMN_Central, mBOVEDB_Central))
-	models.write("5\n")
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
+	models.write("6\n")
+
+### BPP_noGDI + Migration
+for i in range(Priorsize):
+
+	### Define parameters
+	## Theta values from 1 to 15
+	Theta = random.uniform(1,15)
+
+	## divergence time prior following an uniform distribution from 0.5 to 5.
+	coalRootDivTime = random.uniform(0.5,5)
+	#subsequent divergence times, from 0 until the previous divergence times, making sure they are younger than the root.
+	coalT1=random.uniform(0,coalRootDivTime)
+	coalT2=random.uniform(0,coalT1)
+	coalT3=0
+
+	## divergence time prior following an uniform distribution from 0 to 5.
+	mJFE_ITAPMN=0
+	mJFE_BOVEDBODA=random.uniform(0,5)
+	mJFE_INAMEN=random.uniform(0,5)
+	mJFE_COC=random.uniform(0,5)
+	mITAPMN_BOVEDBODA=0
+	mITAPMN_INAMEN=0
+	mITAPMN_COC=0
+	mBOVEDBODA_INAMEN=random.uniform(0,5)
+	mBOVEDBODA_COC=random.uniform(0,5)
+	mINAMEN_COC=random.uniform(0,5)
+
+	### ms commands
+	##nuclear markers, using the number of segregating sites for each loci
+	for s in range(len(segsites)):
+		## nDNA markers
+		com=os.system("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 1 5 %f -m 5 1 %f -m 3 4 %f -m 4 3 %f -m 3 5 %f -m 5 3 %f -m 4 5 %f -m 5 4 %f -ej %f 5 4 -ej %f 3 4 -ej %f 1 4 | sed '/prob/d' | perl msSS.pl >> simModel7.txt" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, mJFE_BOVEDBODA, mJFE_BOVEDBODA,  mJFE_INAMEN, mJFE_INAMEN, mJFE_COC, mJFE_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mBOVEDBODA_COC, mINAMEN_COC, mINAMEN_COC, coalT2, coalT1, coalRootDivTime))
+	
+	## save parameter values and models
+	parameters.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (Theta, coalRootDivTime, coalT1, coalT2, coalT3, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_INAMEN, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mINAMEN_COC))
+	models.write("7\n")
+
 	
 os.system("cat simModel* > SuSt.txt")
