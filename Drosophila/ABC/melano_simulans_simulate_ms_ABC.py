@@ -43,7 +43,7 @@ for i in range(Priorsize):
 		com=os.system("./ms %d 1 -s %d -t %f -I 2 %d %d -ej %f 1 2 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, segsites[s],Theta, nDNADme, nDNADsi, coalRootDivTime))
 
 	## mtDNA marker
-	com=os.system("./ms %d 1 -s 553 -t %f -I 2 %d %d -ej %f 1 2 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2))
+	com=os.system("./ms %d 1 -s 36 -t %f -I 2 %d %d -ej %f 1 2 | sed '/prob/d' | perl msSS.pl >> simModel1.txt" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2))
 
 	## save parameter values and models
 	parameters.write("%f\t%f\n" % (Theta, coalRootDivTime))
@@ -64,7 +64,7 @@ for i in range(Priorsize):
 		com=os.system("./ms %d 1 -s %d -t %f -I 2 %d %d -ej %f 1 2 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, segsites[s],Theta, nDNADme, nDNADsi, coalRootDivTime))
 
 	## mtDNA marker
-	com=os.system("./ms %d 1 -s 553 -t %f -I 2 %d %d -ej %f 1 2 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2))
+	com=os.system("./ms %d 1 -s 36 -t %f -I 2 %d %d -ej %f 1 2 | sed '/prob/d' | perl msSS.pl >> simModel2.txt" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2))
 	
 	## save parameter values and models
 	parameters.write("%f\t%f\n" % (Theta, coalRootDivTime))

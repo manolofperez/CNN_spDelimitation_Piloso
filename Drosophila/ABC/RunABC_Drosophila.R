@@ -2,7 +2,7 @@
 library(abc)
 
 ##change working directory if necessary
-#setwd("/Volumes/HD2/manolo/OneDrive/LaGEVol/Artigos_DoutoradoBelManolo/ArtigoDelimitacao/SysBio/Git/Drosophila/ABC")
+#setwd("/manolo/GitHub/Drosophila/ABC")
 
 ##load models for each simulation
 models<-scan("models_melano_simulans.txt")
@@ -50,83 +50,79 @@ pcaemp<-predict(pcasust, emp, scale=TRUE)
 summary(pcasust)
 #Output:
 #Importance of components:
-#                          PC1    PC2    PC3    PC4     PC5       PC6
-#Standard deviation     1.6249 1.2608 1.1164 1.0495 0.64982 1.284e-08
-#Proportion of Variance 0.3772 0.2271 0.1780 0.1574 0.06032 0.000e+00
-#Cumulative Proportion  0.3772 0.6043 0.7823 0.9397 1.00000 1.000e+00
-#                             PC7
-#Standard deviation     4.626e-15
-#Proportion of Variance 0.000e+00
-#Cumulative Proportion  1.000e+00
+#                          PC1    PC2    PC3    PC4       PC5       PC6       PC7
+#Standard deviation     1.6827 1.3705 1.1114 1.0272 2.606e-07 9.219e-08 1.264e-14
+#Proportion of Variance 0.4045 0.2683 0.1764 0.1507 0.000e+00 0.000e+00 0.000e+00
+#Cumulative Proportion  0.4045 0.6728 0.8493 1.0000 1.000e+00 1.000e+00 1.000e+00
 
-##use the first five axes, as they contained at least 99% of the variance
-pcasust<-pcasust$x[,1:5]
+##use the first four axes, as they contained at least 99% of the variance
+pcasust<-pcasust$x[,1:4]
 ##use the same axes for the empirical data
-pcaemp<-pcaemp[1:5]
+pcaemp<-pcaemp[1:4]
 
 ##run cross-validation 
-pca.cv.modsel10K <- cv4postpr(models, pcasust, nval=100, tol=.05, method="neuralnet")
+pca.cv.modsel10K <- cv4postpr(models, pcasust, nval=100, tol=.2, method="neuralnet")
 
 ##visualize the results of the cross validation
 summary(pca.cv.modsel10K)
 #Output:
 #Confusion matrix based on 100 samples for each model.
 #
-#$tol0.05
-#   1  2
-#1 71 29
-#2 27 73
+#$tol0.2
+#1  2
+#1 82 18
+#2 16 84
 #
 #
 #Mean model posterior probabilities (neuralnet)
 #
-#$tol0.05
-#       1      2
-#1 0.6558 0.3442
-#2 0.3323 0.6677
+#$tol0.2
+#1      2
+#1 0.7072 0.2928
+#2 0.2069 0.7931
 
 ##run the rejection step of ABC with the empirical data, estimating the running time
 start_time <- Sys.time()
-PCANN.05<-postpr(pcaemp, models, pcasust, tol = 0.05, method = "neuralnet")
+PCANN.2<-postpr(pcaemp, models, pcasust, tol = 0.2, method = "neuralnet")
 end_time <- Sys.time()
-PCANN.05_time = end_time - start_time
+PCANN.2_time = end_time - start_time
 
 ##visualize the results of the rejection step
-summary(PCANN.05)
+summary(PCANN.2)
 #Output:
 #Call: 
-#postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.05, 
-#    method = "neuralnet")
+#  postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+#         method = "neuralnet")
 #Data:
-# postpr.out$values (1000 posterior samples)
+#  postpr.out$values (4000 posterior samples)
 #Models a priori:
-# 1, 2
+#  1, 2
 #Models a posteriori:
-# 1, 2
+#  1, 2
 #
 #Proportion of accepted simulations (rejection):
-#    1     2 
-#0.372 0.628 
+#  1      2 
+#0.2145 0.7855 
 #
 #Bayes factors:
-#       1      2
-#1 1.0000 0.5924
-#2 1.6882 1.0000
+#  1      2
+#1 1.0000 0.2731
+#2 3.6620 1.0000
 #
 #
 #Posterior model probabilities (neuralnet):
-#     1      2 
-#0.3265 0.6735 
+#  1      2 
+#0.0175 0.9825 
 #
 #Bayes factors:
-#       1      2
-#1 1.0000 0.4849
-#2 2.0624 1.0000
+#  1       2
+#1  1.0000  0.0178
+#2 56.2607  1.0000
 
 ##visualize running time
-PCANN.05_time
+PCANN.2_time
 #Output:
-#Time difference of 1.896603 secs
+#Time difference of 5.037071 secs
 
 ######################################################################
 #Now we repeat the same steps for the D.melanogaster-D.sechellia pair#
@@ -178,14 +174,10 @@ pcaemp<-predict(pcasust, emp, scale=TRUE)
 summary(pcasust)
 #Output:
 #Importance of components:
-#                          PC1    PC2    PC3    PC4     PC5       PC6
-#Standard deviation     1.6249 1.2608 1.1164 1.0495 0.64982 1.284e-08
-#Proportion of Variance 0.3772 0.2271 0.1780 0.1574 0.06032 0.000e+00
-#Cumulative Proportion  0.3772 0.6043 0.7823 0.9397 1.00000 1.000e+00
-#                             PC7
-#Standard deviation     4.626e-15
-#Proportion of Variance 0.000e+00
-#Cumulative Proportion  1.000e+00
+#                          PC1    PC2    PC3    PC4     PC5     PC6       PC7
+#Standard deviation     1.5883 1.3163 1.1698 1.0219 0.57613 1.7e-14 2.343e-15
+#Proportion of Variance 0.3604 0.2475 0.1955 0.1492 0.04742 0.0e+00 0.000e+00
+#Cumulative Proportion  0.3604 0.6079 0.8034 0.9526 1.00000 1.0e+00 1.000e+00
 
 ##use the first five axes, as they contained at least 99% of the variance
 pcasust<-pcasust$x[,1:5]
@@ -193,65 +185,65 @@ pcasust<-pcasust$x[,1:5]
 pcaemp<-pcaemp[1:5]
 
 ##run cross-validation 
-pca.cv.modsel10K <- cv4postpr(models, pcasust, nval=100, tol=.05, method="neuralnet")
+pca.cv.modsel10K <- cv4postpr(models, pcasust, nval=100, tol=.2, method="neuralnet")
 
 ##visualize the results of the cross validation
 summary(pca.cv.modsel10K)
 #Output:
 #Confusion matrix based on 100 samples for each model.
 #
-#$tol0.05
+#$tol0.2
 #1  2
-#1 80 20
-#2 23 77
+#1 81 19
+#2 27 73
 #
 #
 #Mean model posterior probabilities (neuralnet)
 #
-#$tol0.05
+#$tol0.2
 #1      2
-#1 0.7259 0.2741
-#2 0.2946 0.7054
+#1 0.7221 0.2779
+#2 0.3488 0.6512
 
 ##run the rejection step of ABC with the empirical data, estimating the running time
 start_time <- Sys.time()
-PCANN.05<-postpr(pcaemp, models, pcasust, tol = 0.05, method = "neuralnet")
+PCANN.2<-postpr(pcaemp, models, pcasust, tol = 0.2, method = "neuralnet")
 end_time <- Sys.time()
-PCANN.05_time = end_time - start_time
+PCANN.2_time = end_time - start_time
 
 ##visualize the results of the rejection step
-summary(PCANN.05)
+summary(PCANN.2)
 #Output:
 #Call: 
-#  postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.05, 
+#  postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
 #         method = "neuralnet")
 #Data:
-#  postpr.out$values (1000 posterior samples)
+#  postpr.out$values (4000 posterior samples)
 #Models a priori:
 #  1, 2
 #Models a posteriori:
 #  1, 2
 #
 #Proportion of accepted simulations (rejection):
-#  1     2 
-#0.548 0.452 
+#  1      2 
+#0.5312 0.4688 
 #
 #Bayes factors:
 #  1      2
-#1 1.0000 1.2124
-#2 0.8248 1.0000
+#1 1.0000 1.1333
+#2 0.8824 1.0000
 #
 #
 #Posterior model probabilities (neuralnet):
 #  1      2 
-#0.9126 0.0874 
+#0.8939 0.1061 
 #
 #Bayes factors:
-#  1       2
-#1  1.0000 10.4407
-#2  0.0958  1.0000
+#  1      2
+#1 1.0000 8.4261
+#2 0.1187 1.0000
 
 ##visualize running time
-PCANN.05_time
+PCANN.2_time
 #Output:
-#Time difference of 1.776211 secs
+#Time difference of 5.045474 secs

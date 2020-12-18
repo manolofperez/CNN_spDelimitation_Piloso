@@ -69,7 +69,7 @@ for i in range(Priorsize):
 		nc_output = np.append(nc_output, np.array(ms2nparray(com.read().splitlines())),axis=2)
 	
 	## mtDNA marker
-	com=subprocess.Popen("./ms %d 1 -s 553 -t %f -I 2 %d %d -ej %f 1 2" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2), shell=True, stdout=subprocess.PIPE).stdout
+	com=subprocess.Popen("./ms %d 1 -s 36 -t %f -I 2 %d %d -ej %f 1 2" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2), shell=True, stdout=subprocess.PIPE).stdout
 	mt_output = np.array(ms2nparray(com.read().splitlines()))
 
 	#concatenate segregating sites from all markers
@@ -102,7 +102,7 @@ for i in range(Priorsize):
 		nc_output = np.append(nc_output, np.array(ms2nparray(com.read().splitlines())),axis=2)
 
 	## mtDNA marker
-	com=subprocess.Popen("./ms %d 1 -s 553 -t %f -I 2 %d %d -ej %f 1 2" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2), shell=True, stdout=subprocess.PIPE).stdout
+	com=subprocess.Popen("./ms %d 1 -s 36 -t %f -I 2 %d %d -ej %f 1 2" % (nDNANsam, Theta/4, nDNADme, nDNADsi, coalRootDivTime/2), shell=True, stdout=subprocess.PIPE).stdout
 	mt_output = np.array(ms2nparray(com.read().splitlines()))
 
 	#concatenate segregating sites from all markers
