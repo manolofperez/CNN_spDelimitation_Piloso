@@ -10,6 +10,8 @@ import os
 import math
 import shlex, subprocess
 import numpy as np
+import time
+
 
 ##define a function to read ms' simulations and transform then into a NumPy array.    
 def ms2nparray(xfile):
@@ -56,6 +58,8 @@ nDNAMEN = 8
 ## nDNA sample size of ITAPMN.
 nDNAITAPMN = nDNAITA + nDNAPMN
 ## nDNA sample size of BOVEDBODA.
+nDNABOVEDB = nDNAEDB + nDNABOV
+## nDNA sample size of BOVEDBODA.
 nDNABOVEDBODA = nDNAEDB + nDNABOV + nDNAODA
 ## nDNA sample size of INAMEN.
 nDNAINAMEN = nDNAINA + nDNAMEN
@@ -80,7 +84,8 @@ simModel7 = []
 ## create a file to store parameters
 parameters = file("parameters.txt","w")
 
-### Splitter Model
+start = time.time()
+## Splitter Model
 for i in range(Priorsize):
 
 	### Define parameters
@@ -125,8 +130,10 @@ for i in range(Priorsize):
 simModel1=np.array(simModel1)
 np.save('simModel1.npy', simModel1)
 del(simModel1)
+print ('Time: ')
+print (time.time() - start)
 
-
+start = time.time()
 ### Splitter Model + Migration
 for i in range(Priorsize):
 
@@ -171,7 +178,10 @@ for i in range(Priorsize):
 simModel2=np.array(simModel2)
 np.save('simModel2.npy', simModel2)
 del(simModel2)
+print ('Time: ')
+print (time.time() - start)
 
+start = time.time()
 ### Lumper Model
 for i in range(Priorsize):
 
@@ -216,7 +226,10 @@ for i in range(Priorsize):
 simModel3=np.array(simModel3)
 np.save('simModel3.npy', simModel3)
 del(simModel3)
+print ('Time: ')
+print (time.time() - start)
 
+start = time.time()
 ### Lumper Model + Migration
 for i in range(Priorsize):
 
@@ -261,7 +274,10 @@ for i in range(Priorsize):
 simModel4=np.array(simModel4)
 np.save('simModel4.npy', simModel4)
 del(simModel4)
+print ('Time: ')
+print (time.time() - start)
 
+start = time.time()
 ### Geneland Model
 for i in range(Priorsize):
 
@@ -306,7 +322,10 @@ for i in range(Priorsize):
 simModel5=np.array(simModel5)
 np.save('simModel5.npy', simModel5)
 del(simModel5)
+print ('Time: ')
+print (time.time() - start)
 
+start = time.time()
 ### BPP_noGDI
 for i in range(Priorsize):
 
@@ -339,7 +358,7 @@ for i in range(Priorsize):
 	nc_output = np.empty([1,nDNANsam,0])
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=subprocess.Popen("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -ej %f 5 4 -ej %f 3 4 -ej %f 1 4" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, coalT2, coalT1, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
+		com=subprocess.Popen("./ms %d 1 -s %d -t %f -I 6 %d %d %d %d %d %d -ej 0 2 5 -ej %f 3 4 -ej %f 6 5 -ej %f 4 5 -ej %f 1 5" % (nDNANsam, segsites[s],Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB, nDNAODA, nDNAINAMEN, nDNACOC, coalT3, coalT2, coalT1, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
 		nc_output = np.append(nc_output, np.array(ms2nparray(com.read().splitlines())),axis=2)
 
 	#Transpose the matrix
@@ -352,7 +371,10 @@ for i in range(Priorsize):
 simModel6=np.array(simModel6)
 np.save('simModel6.npy', simModel6)
 del(simModel6)
+print ('Time: ')
+print (time.time() - start)
 
+start = time.time()
 ### BPP_noGDI + Migration
 for i in range(Priorsize):
 
@@ -384,7 +406,7 @@ for i in range(Priorsize):
 	nc_output = np.empty([1,nDNANsam,0])
 	for s in range(len(segsites)):
 		## nDNA markers
-		com=subprocess.Popen("./ms %d 1 -s %d -t %f -I 5 %d %d %d %d %d -ej 0 2 4 -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 1 5 %f -m 5 1 %f -m 3 4 %f -m 4 3 %f -m 3 5 %f -m 5 3 %f -m 4 5 %f -m 5 4 %f -ej %f 5 4 -ej %f 3 4 -ej %f 1 4" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDBODA, nDNAINAMEN, nDNACOC, mJFE_BOVEDBODA, mJFE_BOVEDBODA,  mJFE_INAMEN, mJFE_INAMEN, mJFE_COC, mJFE_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mBOVEDBODA_COC, mINAMEN_COC, mINAMEN_COC, coalT2, coalT1, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
+		com=subprocess.Popen("./ms %d 1 -s %d -t %f -I 6 %d %d %d %d %d %d -ej 0 2 5 -m 1 3 %f -m 3 1 %f -m 1 4 %f -m 4 1 %f -m 1 5 %f -m 5 1 %f -m 1 6 %f -m 6 1 %f -m 3 4 %f -m 4 3 %f -m 3 5 %f -m 5 3 %f -m 3 6 %f -m 6 3 %f -m 4 5 %f -m 5 4 %f -m 4 6 %f -m 6 4 %f -m 5 6 %f -m 6 5 %f -ej %f 3 4 -ej %f 6 5 -ej %f 4 5 -ej %f 1 5" % (nDNANsam, segsites[s], Theta, nDNAJFE, nDNAITAPMN ,nDNABOVEDB, nDNAODA, nDNAINAMEN, nDNACOC, mJFE_ITAPMN, mJFE_ITAPMN, mJFE_BOVEDBODA, mJFE_BOVEDBODA,  mJFE_INAMEN, mJFE_INAMEN, mJFE_COC, mJFE_COC, mITAPMN_BOVEDBODA, mITAPMN_BOVEDBODA, mITAPMN_INAMEN, mITAPMN_INAMEN, mITAPMN_COC, mITAPMN_COC, mBOVEDBODA_INAMEN, mBOVEDBODA_INAMEN, mBOVEDBODA_COC, mBOVEDBODA_COC, mINAMEN_COC, mINAMEN_COC, coalT3, coalT2, coalT1, coalRootDivTime), shell=True, stdout=subprocess.PIPE).stdout
 		nc_output = np.append(nc_output, np.array(ms2nparray(com.read().splitlines())),axis=2)
 
 	#Transpose the matrix
@@ -396,3 +418,5 @@ for i in range(Priorsize):
 #save NumPy arrays
 simModel7=np.array(simModel7)
 np.save('simModel7.npy', simModel7)
+print ('Time: ')
+print (time.time() - start)
