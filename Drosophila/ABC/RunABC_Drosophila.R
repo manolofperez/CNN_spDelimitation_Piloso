@@ -50,10 +50,10 @@ pcaemp<-predict(pcasust, emp, scale=TRUE)
 summary(pcasust)
 #Output:
 #Importance of components:
-#                          PC1    PC2    PC3    PC4       PC5       PC6       PC7
-#Standard deviation     1.6827 1.3705 1.1114 1.0272 2.606e-07 9.219e-08 1.264e-14
-#Proportion of Variance 0.4045 0.2683 0.1764 0.1507 0.000e+00 0.000e+00 0.000e+00
-#Cumulative Proportion  0.4045 0.6728 0.8493 1.0000 1.000e+00 1.000e+00 1.000e+00
+#                          PC1    PC2    PC3    PC4       PC5       PC6 9.586e-15
+#Standard deviation     1.6799 1.3690 1.1168 1.0279 2.621e-07 9.332e-08 0.000e+00
+#Proportion of Variance 0.4032 0.2677 0.1782 0.1509 0.000e+00 0.000e+00 1.000e+00
+#Cumulative Proportion  0.4032 0.6709 0.8491 1.0000 1.000e+00 1.000e+00 es, as th
 
 ##use the first four axes, as they contained at least 99% of the variance
 pcasust<-pcasust$x[,1:4]
@@ -75,16 +75,16 @@ summary(pca.cv.modsel10K)
 #
 #$tol0.2
 #1  2
-#1 82 18
-#2 16 84
+#1 88 12
+#2 25 75
 #
 #
 #Mean model posterior probabilities (neuralnet)
 #
 #$tol0.2
 #1      2
-#1 0.7072 0.2928
-#2 0.2069 0.7931
+#1 0.7445 0.2555
+#2 0.2786 0.7214
 
 ##run the rejection step of ABC with the empirical data, estimating the running time
 start_time <- Sys.time()
@@ -99,7 +99,7 @@ summary(PCANN.2)
 #  postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
 #         method = "neuralnet")
 #Data:
-#  postpr.out$values (4000 posterior samples)
+#  postpr.out$values (40000 posterior samples)
 #Models a priori:
 #  1, 2
 #Models a posteriori:
@@ -107,27 +107,27 @@ summary(PCANN.2)
 #
 #Proportion of accepted simulations (rejection):
 #  1      2 
-#0.2145 0.7855 
+#0.2116 0.7884 
 #
 #Bayes factors:
 #  1      2
-#1 1.0000 0.2731
-#2 3.6620 1.0000
+#1 1.0000 0.2684
+#2 3.7253 1.0000
 #
 #
 #Posterior model probabilities (neuralnet):
 #  1      2 
-#0.0175 0.9825 
+#0.0637 0.9363 
 #
 #Bayes factors:
 #  1       2
-#1  1.0000  0.0178
-#2 56.2607  1.0000
+#1  1.0000  0.0680
+#2 14.7032  1.0000
 
 ##visualize running time
 PCANN.2_time
 #Output:
-#Time difference of 5.037071 secs
+#Time difference of 1.264912 mins
 
 ######################################################################
 #Now we repeat the same steps for the D.melanogaster-D.sechellia pair#
@@ -179,10 +179,10 @@ pcaemp<-predict(pcasust, emp, scale=TRUE)
 summary(pcasust)
 #Output:
 #Importance of components:
-#                          PC1    PC2    PC3    PC4     PC5     PC6       PC7
-#Standard deviation     1.5883 1.3163 1.1698 1.0219 0.57613 1.7e-14 2.343e-15
-#Proportion of Variance 0.3604 0.2475 0.1955 0.1492 0.04742 0.0e+00 0.000e+00
-#Cumulative Proportion  0.3604 0.6079 0.8034 0.9526 1.00000 1.0e+00 1.000e+00
+#                          PC1    PC2    PC3    PC4     PC5      PC6       PC7
+#Standard deviation     1.6446 1.3046 1.1898 1.0155 0.38281 1.82e-13 3.769e-15
+#Proportion of Variance 0.3864 0.2431 0.2022 0.1473 0.02094 0.00e+00 0.000e+00
+#Cumulative Proportion  0.3864 0.6295 0.8317 0.9791 1.00000 1.00e+00 1.000e+00
 
 ##use the first five axes, as they contained at least 99% of the variance
 pcasust<-pcasust$x[,1:5]
@@ -199,7 +199,7 @@ summary(pca.cv.modsel10K)
 #
 #$tol0.2
 #1  2
-#1 81 19
+#1 78 22
 #2 27 73
 #
 #
@@ -207,8 +207,8 @@ summary(pca.cv.modsel10K)
 #
 #$tol0.2
 #1      2
-#1 0.7221 0.2779
-#2 0.3488 0.6512
+#1 0.6882 0.3118
+#2 0.3118 0.6882
 
 ##run the rejection step of ABC with the empirical data, estimating the running time
 start_time <- Sys.time()
@@ -220,10 +220,653 @@ PCANN.2_time = end_time - start_time
 summary(PCANN.2)
 #Output:
 #Call: 
-#  postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
-#         method = "neuralnet")
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+    method = "neuralnet")
+Data:
+ postpr.out$values (40000 posterior samples)
+Models a priori:
+ 1, 2
+Models a posteriori:
+ 1, 2
+
+Proportion of accepted simulations (rejection):
+     1      2 
+0.2439 0.7561 
+
+Bayes factors:
+       1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+    1     2 
+0.474 0.526 
+
+Bayes factors:
+       1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#
+#
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+       method = "neuralnet")
+Data:
+  postpr.out$values (40000 posterior samples)
+Models a priori:
+  1, 2
+Models a posteriori:
+  1, 2
+
+Proportion of accepted simulations (rejection):
+  1      2 
+0.2439 0.7561 
+
+Bayes factors:
+  1      2
+1 1.0000 0.3226
+2 3.0996 1.0000
+
+
+Posterior model probabilities (neuralnet):
+  1     2 
+0.474 0.526 
+
+Bayes factors:
+  1      2
+1 1.0000 0.9012
+2 1.1097 1.0000
+
+#Call: 
+#postpr(target = pcaemp, index = models, sumstat = pcasust, tol = 0.2, 
+#       method = "neuralnet")
 #Data:
-#  postpr.out$values (4000 posterior samples)
+#  postpr.out$values (40000 posterior samples)
 #Models a priori:
 #  1, 2
 #Models a posteriori:
@@ -231,24 +874,25 @@ summary(PCANN.2)
 #
 #Proportion of accepted simulations (rejection):
 #  1      2 
-#0.5312 0.4688 
+#0.2439 0.7561 
 #
 #Bayes factors:
 #  1      2
-#1 1.0000 1.1333
-#2 0.8824 1.0000
+#1 1.0000 0.3226
+#2 3.0996 1.0000
 #
 #
 #Posterior model probabilities (neuralnet):
-#  1      2 
-#0.8939 0.1061 
+#  1     2 
+#0.474 0.526 
 #
 #Bayes factors:
 #  1      2
-#1 1.0000 8.4261
-#2 0.1187 1.0000
+#1 1.0000 0.9012
+#2 1.1097 1.0000
+
 
 ##visualize running time
 PCANN.2_time
 #Output:
-#Time difference of 5.045474 secs
+#Time difference of 1.981118 mins
