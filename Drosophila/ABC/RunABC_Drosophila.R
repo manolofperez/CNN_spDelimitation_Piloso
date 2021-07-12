@@ -11,7 +11,7 @@ models<-scan("models_melano_simulans.txt")
 sust<-read.table("SuSt_melano_simulans.txt")
 
 ##inform total number of simulations
-numsim=20000
+numsim=200000
 
 ##inform total number of loci
 numloc=3
@@ -60,8 +60,13 @@ pcasust<-pcasust$x[,1:4]
 ##use the same axes for the empirical data
 pcaemp<-pcaemp[1:4]
 
+
 ##run cross-validation 
+start_time <- Sys.time()
 pca.cv.modsel10K <- cv4postpr(models, pcasust, nval=100, tol=.2, method="neuralnet")
+end_time <- Sys.time()
+cvPCANN.2_time = end_time - start_time
+cvPCANN.2_time
 
 ##visualize the results of the cross validation
 summary(pca.cv.modsel10K)
@@ -135,7 +140,7 @@ models<-scan("models_melano_sechellia.txt")
 sust<-read.table("SuSt_melano_sechellia.txt")
 
 ##inform total number of simulations
-numsim=20000
+numsim=200000
 
 ##inform total number of loci
 numloc=3
